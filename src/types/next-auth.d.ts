@@ -23,4 +23,4 @@ declare module 'next-auth/jwt' {
     username?: string;
   }
 }
-declare module 'bcryptjs';
+
