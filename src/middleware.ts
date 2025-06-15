@@ -1,22 +1,23 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 
 // Middleware function
-export async function middleware(request: NextRequest) {
-  const token = await getToken({ req: request });
+export function middleware(request: NextRequest) {
   const url = request.nextUrl;
 
-  // If the user is already authenticated and tries to access auth-related routes (sign-in, sign-up, etc.), redirect them to the homepage
+  const token = request.cookies.get('next-auth.session-token') || 
+                request.cookies.get('__Secure-next-auth.session-token'); // For secure cookies on production
+
+  // If the user is already authenticated and tries to access auth routes
   if (token && (
     url.pathname === '/sign-in' ||
     url.pathname === '/sign-up' ||
     url.pathname === '/verify'
   )) {
-    return NextResponse.redirect(new URL('/home', request.url));
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  // If the user is not authenticated and tries to access protected pages, redirect them to the sign-in page
+  // If the user is not authenticated and tries to access protected routes
   if (!token && (
     url.pathname.startsWith('/dashboard') ||
     url.pathname === '/'
@@ -24,17 +25,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/sign-in', request.url));
   }
 
-  // Allow the request if none of the above conditions apply
   return NextResponse.next();
 }
 
-// Define which paths should be matched by the middleware
 export const config = {
   matcher: [
+   
     '/sign-in',
     '/sign-up',
     '/',
     '/dashboard/:path*',
     '/verify/:path*',
+    
   ],
 };
