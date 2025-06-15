@@ -8,6 +8,9 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('next-auth.session-token') || 
                 request.cookies.get('__Secure-next-auth.session-token'); // For secure cookies on production
 
+                 console.log('TOKEN:', token?.value); // Log token value (use .value to get the actual string)
+  console.log('URL Pathname:', url.pathname); // Log the path being accessed
+
   // If the user is already authenticated and tries to access auth routes
   if (token && (
     url.pathname === '/sign-in' ||
