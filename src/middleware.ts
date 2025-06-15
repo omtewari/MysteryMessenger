@@ -38,4 +38,5 @@ export const config = {
     '/verify/:path*',
     
   ],
+   runtime: 'nodejs',
 };
