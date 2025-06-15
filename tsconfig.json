@@ -26,7 +26,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "types/**/*.d.ts"  // ✅ Includes custom types like next-auth.d.ts or bcryptjs declarations
   ],
   "exclude": ["node_modules"]
 }
